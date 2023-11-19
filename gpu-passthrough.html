@@ -37,7 +37,7 @@
     <p>Go to GRUB_CMDLINE_LINUX_DEFAULT, and at the end of the line, add amd_iommu=on or intel_iommu=on if you have an Intel CPU. Save and exit the file.</p>
     <p>To find the device IDs of the GPU, open the terminal and enter the following command:</p>
     <pre>lspci -nn | grep "NVIDIA"</pre>
-    <p>Make a note of the device IDs of the GPU. There will be two device IDs, one for the audio controller and one for the VGA controller. Make sure you grab both of them.</p>
+    <p>Make a note of the device IDs of the GPU (device id will look something like this 10de:038b). There will be two device IDs, one for the audio controller and one for the VGA controller. Make sure you grab both of them.</p>
     <p>Now, add the device IDs to the Grub configuration. Open the terminal and enter the following command:</p>
     <pre>sudo vim /etc/default/grub</pre>
     <p>Go to GRUB_CMDLINE_LINUX_DEFAULT in the file and add vfio-pci.ids=device_id1,device_id2 at the end of the line, replacing device_id1 and device_id2 with the actual device IDs you obtained earlier. Save and exit the file.</p>
