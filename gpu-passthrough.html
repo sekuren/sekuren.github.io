@@ -1,52 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    
-    <title>sekuren's blog</title>
-    
-    <meta name="description" content="sekuren's blog">
-    <meta name="author" content="sekuren">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/css/style.css">
+<html>
+<head>
+    <title>Sekuren's Blog</title>
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        pre {
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: auto;
         }
     </style>
-  </head>
-  <body>
-    <header>
+</head>
+<body>
+
+  <header>
       <h1>sekuren's blog</h1>
     </header>
     <nav>
       <a href="https://sekuren.github.io">home</a> |
-      <a href="https://sekuren.github.io/blog.html">blog</a> |
-      <a href="https://sekuren.github.io/me.html">about me</a> |
-      <a href="https://sekuren.github.io/wow.html">wow</a> 
+      <a href="https://sekuren.github.io/blog/">blog</a> |
+      <a href="https://sekuren.github.io/me/">about me</a> |
+      <a href="https://sekuren.github.io/wow">wow</a> |
     </nav>
-    <main>
-      
-<h2>List of blog posts</h2>
-<ul> 
-  
-  <li>
-    [<small class="subtitle">2023-11-19</small>]
-    <a href="https://sekuren.github.io/gpu-passthrough/">A Quick Guide To GPU Passthrough</a>
-  </li>
-  
 
-  
-</ul>
-
-    </main>
-    <footer>
-      :3
-    </footer>
-
-  </body>
+    <p>Welcome to this quick guide on how to enable GPU passthrough. Let's get started.</p>
+    <p>Firstly, go to your computer's BIOS settings. Look for options related to Intel VT-d or AMD-Vi or IOMMU and enable them. Save and exit the BIOS settings.</p>
+    <p>To enable IOMMU in grub, open the terminal and enter the following command:</p>
+    <pre>sudo vim /etc/default/grub</pre>
+    <p>Go to GRUB_CMDLINE_LINUX_DEFAULT, and at the end of the line, add amd_iommu=on or intel_iommu=on if you have an Intel CPU. Save and exit the file.</p>
+    <p>To find the device IDs of the GPU, open the terminal and enter the following command:</p>
+    <pre>lspci -nn | grep "NVIDIA"</pre>
+    <p>Make a note of the device IDs of the GPU. There will be two device IDs, one for the audio controller and one for the VGA controller. Make sure you grab both of them.</p>
+    <p>Now, add the device IDs to the Grub configuration. Open the terminal and enter the following command:</p>
+    <pre>sudo vim /etc/default/grub</pre>
+    <p>Go to GRUB_CMDLINE_LINUX_DEFAULT in the file and add vfio-pci.ids=device_id1,device_id2 at the end of the line, replacing device_id1 and device_id2 with the actual device IDs you obtained earlier. Save and exit the file.</p>
+    <p>Next, rebuild grub by entering the following command in the terminal:</p>
+    <pre>sudo grub-mkconfig -o /boot/grub.cfg</pre>
+    <p>We also need to put the device IDs in the vfio config. Open the terminal and enter the following command:</p>
+    <pre>sudo nano /etc/modprobe.d/vfio.conf</pre>
+    <p>Inside the file, add the following line:options vfio-pci ids=device_id1,device_id2softdep nvidia pre: vfio-pci1. Save and exit the file.</p>
+    <p>Now, we need to rebuild the initramfs. In Arch, enter the following command:</p>
+    <pre>sudo mkinitcpio -p linux</pre>
+    <p>In Debian, enter the following command:</p>
+    <pre>sudo update initramfs -c -k $(uname -r)</pre>
+    <p>Finally, reboot your device. Make sure you see vfio-pci as the driver when you enter the following command in the terminal:</p>
+    <pre>lspci -k</pre>
+    <p>That's it! You have successfully enabled GPU passthrough on your system. Enjoy!</p>
+</body>
 </html>
-
