@@ -46,7 +46,7 @@
     <p>We also need to put the device IDs in the vfio config. Open the terminal and enter the following command:</p>
     <pre>sudo nano /etc/modprobe.d/vfio.conf</pre>
     <p>Inside the file, add the following line:</p><pre>options vfio-pci ids=device_id1,device_id2
-        softdep nvidia pre: vfio-pci1.</pre><p> Save and exit the file.</p>
+    softdep nvidia pre: vfio-pci1</pre><p> Save and exit the file.</p>
     <p>Now, we need to rebuild the initramfs. In Arch, enter the following command:</p>
     <pre>sudo mkinitcpio -p linux</pre>
     <p>In Debian, enter the following command:</p>
