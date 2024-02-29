@@ -42,7 +42,7 @@
     <pre>sudo vim /etc/default/grub</pre>
     <p>Go to GRUB_CMDLINE_LINUX_DEFAULT in the file and add vfio-pci.ids=device_id1,device_id2 at the end of the line, replacing device_id1 and device_id2 with the actual device IDs you obtained earlier. Save and exit the file.</p>
     <p>Next, rebuild grub by entering the following command in the terminal:</p>
-    <pre>sudo grub-mkconfig -o /boot/grub.cfg</pre>
+    <pre>sudo grub-mkconfig -o /boot/grub/grub.cfg</pre>
     <p>We also need to put the device IDs in the vfio config. Open the terminal and enter the following command:</p>
     <pre>sudo nano /etc/modprobe.d/vfio.conf</pre>
     <p>Inside the file, add the following line:options vfio-pci ids=device_id1,device_id2softdep nvidia pre: vfio-pci1. Save and exit the file.</p>
