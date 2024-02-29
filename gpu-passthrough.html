@@ -50,7 +50,7 @@
     <p>Now, we need to rebuild the initramfs. In Arch, enter the following command:</p>
     <pre>sudo mkinitcpio -p linux</pre>
     <p>In Debian, enter the following command:</p>
-    <pre>sudo update initramfs -c -k $(uname -r)</pre>
+    <pre>sudo update-initramfs -c -k $(uname -r)</pre>
     <p>Finally, reboot your device. Make sure you see vfio-pci as the driver when you enter the following command in the terminal:</p>
     <pre>lspci -k</pre>
     <p>That's it! You have successfully enabled GPU passthrough on your system. Enjoy!</p>
